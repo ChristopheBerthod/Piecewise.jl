@@ -2,7 +2,7 @@ using Documenter
 using Piecewise, PiecewiseHilbert, PiecewiseLorentz
 
 makedocs(
-    repo = Documenter.Remotes.GitHub("ChristopheBerthod", "Piecewise"),
+    repo = Documenter.Remotes.GitHub("ChristopheBerthod", "Piecewise.jl"),
     sitename = "Piecewise",
     format = Documenter.HTML(prettyurls = false,
         edit_link = "main",
@@ -20,6 +20,6 @@ makedocs(
 # See "Hosting Documentation" and deploydocs() in the Documenter manual
 # for more information.
 deploydocs(
-    repo = "github.com/ChristopheBerthod/Piecewise.git",
+    repo = "github.com/ChristopheBerthod/Piecewise.jl.git",
     devbranch = "main"
 )
