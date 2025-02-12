@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    tags: '*'
+  pull_request:
+
+jobs:
+  test:
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        version:
+          - '1.11'
+        os:
+          - ubuntu-latest
+          - macOS-latest
+          - windows-latest
+        arch:
+          - x64
+    steps:
+      - uses: actions/checkout@v1
+      - uses: julia-actions/setup-julia@latest
+        with:
+          version: ${{ matrix.version }}
+          arch: ${{ matrix.arch }}
+      - uses: julia-actions/julia-runtest@latest
+        with:
+          project: Piecewise
+      - uses: julia-actions/julia-runtest@latest
+        with:
+          project: PiecewiseHilbert
+      - uses: julia-actions/julia-runtest@latest
+        with:
+          project: PiecewiseLorentz
+      - uses: julia-actions/julia-processcoverage@v1
+        with:
+          directories: Piecewise/src,PiecewiseHilbert/src,PiecewiseLorentz/src
+      - uses: codecov/codecov-action@v5
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
