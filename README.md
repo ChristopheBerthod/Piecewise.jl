@@ -1,4 +1,4 @@
-# Piecewise <a href='https://ChristopheBerthod.github.io/Piecewise.jl/dev'><img src="docs/src/assets/logo.png" align="right" height="50" /></a>
+# Piecewise
 
 [![CI](https://github.com/ChristopheBerthod/Piecewise.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/ChristopheBerthod/Piecewise.jl/actions/workflows/CI.yml)
 [![codecov](https://codecov.io/gh/ChristopheBerthod/Piecewise.jl/graph/badge.svg?token=cXaZZi9hdM)](https://codecov.io/gh/ChristopheBerthod/Piecewise.jl)
