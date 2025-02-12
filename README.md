@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/ChristopheBerthod/Piecewise.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/ChristopheBerthod/Piecewise.jl/actions/workflows/CI.yml)
 [![codecov](https://codecov.io/gh/ChristopheBerthod/Piecewise.jl/graph/badge.svg?token=cXaZZi9hdM)](https://codecov.io/gh/ChristopheBerthod/Piecewise.jl)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/ChristopheBerthod/Piecewise.jl/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/ChristopheBerthod/Piecewise.jl/blob/main/LICENSE)
 [![Documentation](https://github.com/ChristopheBerthod/Piecewise.jl/actions/workflows/Documenter.yml/badge.svg)](https://github.com/ChristopheBerthod/Piecewise.jl/actions/workflows/Documenter.yml)
 [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://ChristopheBerthod.github.io/Piecewise.jl/dev)
 <!--[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://ChristopheBerthod.github.io/Piecewise.jl/stable)-->
