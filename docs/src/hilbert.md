@@ -1,6 +1,17 @@
 # PiecewiseHilbert
 
-The Hilbert transform of a real-valued function ``f(x)`` is defined as
+## Installation
+
+The package won't work without [Piecewise](https://github.com/ChristopheBerthod/Piecewise.jl). Both can be installed with `Pkg.add`.
+```julia
+using Pkg; Pkg.add("Piecewise"); Pkg.add("PiecewiseHilbert")
+```
+
+
+
+## Introduction
+
+The Hilbert transform of a function ``f(x)`` of a real variable ``x`` is defined as
 ```math
 (H\circ f)(z) = \int_{-\infty}^{\infty}dx\,\frac{f(x)}{z-x},
 ```
@@ -8,11 +19,11 @@ where ``z\in\mathbb{C}\setminus\mathbb{R}`` is a complex number with non-zero im
 
 [^1]: We have ``\int^x |x|^{-\epsilon}/(z-x)=(\mathrm{sign}(x)/z)^{\epsilon}B_{x/z}(1-\epsilon,0)``, where ``B_z(a, b)`` is the [incomplete beta function](https://en.wikipedia.org/wiki/Beta_function), which approaches ``-\pi (\mp1/z)^{\epsilon}/\sin(\pi\epsilon)`` for ``x\to\pm\infty``.
 
-The module [PiecewiseHilbert](@ref) adds to the [Formulas](@ref) defined in the module [Piecewise](@ref) the primitive functions corresponding to the Hilbert kernel ``1/(z-x)``, enabling the fast Hilbert transform of piecewise functions using these formulas.
+The module [PiecewiseHilbert](https://github.com/ChristopheBerthod/Piecewise.jl) adds to the [Formulas](@ref) defined in the module [Piecewise](@ref) the primitive functions corresponding to the Hilbert kernel ``1/(z-x)``, enabling the fast Hilbert transform of piecewise functions using these formulas.
 
 The method [`hilbert_transform`](@ref) returns the Hilbert transform of a [`PiecewiseFunction`](@ref) object, as calculated using the definition above. It also works with user-defined [`Formula`](@ref) objects. Depending on the formulas used, however, the result can be numerically unstable at large ``|z|``. This is circumvented by means of a [moment expansion](@ref momentexpansion-H). Both the definition and the moment expansion are implemented in a [`HilbertTransform`](@ref) object created as:
 ```
-H = HilbertTransform(f::PiecewiseFunction [, radius::Real])
+H = HilbertTransform(f::PiecewiseFunction[, radius::Real])
 ```
 The moment expansion is used if ``|z|>`` `radius` (set automatically by default). Once initialized, the Hilbert transform can be evaluated as `H(z)`.
 
@@ -31,7 +42,7 @@ The structure [`HilbertTransform`](@ref) stores the piecewise function and its m
 
 ## Primitives
 
-Here, we describe the primitives added by [PiecewiseHilbert](@ref) to the [Formulas](@ref) provided by [Piecewise](@ref).
+Here, we describe the primitives added by [PiecewiseHilbert](https://github.com/ChristopheBerthod/Piecewise.jl) to the [Formulas](@ref) provided by [Piecewise](@ref).
 
 [`POLY`](@ref POLY-H) | 
 [`TAIL`](@ref TAIL-H) | 

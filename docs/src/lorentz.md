@@ -1,13 +1,24 @@
 # PiecewiseLorentz
 
-The order-``m`` Lorentz transform of a real-valued function ``f(x)`` is defined as
+## Installation
+
+The package won't work without [Piecewise](https://github.com/ChristopheBerthod/Piecewise.jl). Both can be installed with `Pkg.add`.
+```julia
+using Pkg; Pkg.add("Piecewise"); Pkg.add("PiecewiseLorentz")
+```
+
+
+
+## Introduction
+
+The order-``m`` Lorentz transform of a function ``f(x)`` of a real variable ``x`` is defined as
 ```math
 \left(L^m\circ f\right)(y, z) = \int_{-\infty}^{\infty}dx\,f(x)
 \left[\frac{-\mathrm{Im}\,z/\pi}{(y-\mathrm{Re}\,z-x)^2+(\mathrm{Im}\,z)^2}\right]^m,
 ```
-where ``m`` is a positive integer, ``y`` is a real number, and ``z`` is a complex number with strictly negative imaginary part.
+where ``m`` is a positive integer, ``y`` is a real number, and ``z`` is a complex number with strictly negative imaginary part. The name *Lorentz transform* was chosen, because the function in square brackets is a [Lorentzian](https://en.wikipedia.org/wiki/Cauchy_distribution) of half-width ``\mathrm{Im}\,z`` centered at ``x=y-\mathrm{Re}\,z``.
 
-The module [PiecewiseLorentz](@ref) adds to the [Formulas](@ref) defined in the module [Piecewise](@ref) the primitive functions corresponding to the order-``m`` Lorentz kernel ``\left[\frac{-\mathrm{Im}\,z/\pi}{(y-\mathrm{Re}\,z-x)^2+(\mathrm{Im}\,z)^2}\right]^m``, enabling the fast Lorentz transform of [`PiecewiseFunction`](@ref) objects using these formulas.
+The module [PiecewiseLorentz](https://github.com/ChristopheBerthod/Piecewise.jl) adds to the [Formulas](@ref) defined in the module [Piecewise](@ref) the primitive functions corresponding to the order-``m`` Lorentz kernel ``\left[\frac{-\mathrm{Im}\,z/\pi}{(y-\mathrm{Re}\,z-x)^2+(\mathrm{Im}\,z)^2}\right]^m``, enabling the fast Lorentz transform of [`PiecewiseFunction`](@ref) objects using these formulas.
 
 !!! warning
 	The present version only implements ``m=1,2,3`` for the formulas [`POLY`](@ref), [`LOG`](@ref), [`PLS`](@ref), and [`XLOG`](@ref).
@@ -17,11 +28,11 @@ The module [PiecewiseLorentz](@ref) adds to the [Formulas](@ref) defined in the 
 	\left(H\circ f\right)(y-z).
 	```
 
-The method [`lorentz_transform`](@ref) return the Lorentz transform of a [`PiecewiseFunction`](@ref) object, as calculated using the definition above. The transform has algebraic tails at large ``y``, that may suffer from numerical errors. A numerically stable [moment expansion](@ref momentexpansion-L) is therefore used for large values of ``|y-\mathrm{Re}\,z|``. Both the definition and the moment expansion are implemented in a [`LorentzTransform`](@ref) object created as:
+The method [`lorentz_transform`](@ref) return the Lorentz transform of a [`PiecewiseFunction`](@ref) object, as calculated using the definition above. The transform has algebraic tails at large ``y``, that may suffer from numerical errors. A numerically more stable [moment expansion](@ref momentexpansion-L) is therefore used for large values of ``|y-\mathrm{Re}\,z|``. Both the definition and the moment expansion are implemented in a [`LorentzTransform`](@ref) object created as:
 ```
-L = LorentzTransform(f::PiecewiseFunction, m::Integer [, ground::Real])
+L = LorentzTransform(f::PiecewiseFunction, m::Integer[, ground::Real])
 ```
-The moment expansion is used if ``y-\mathrm{Re}\,z`` is outside the support of the piecewise function `f` and if the definition yields a result smaller than `ground` (by default `1e-10`). Once initialized, the Lorentz transform can be evaluated as `L(y, z)`.
+The moment expansion is used if ``y-\mathrm{Re}\,z`` is outside the [support](@ref) of the piecewise function `f` and if the definition yields a result smaller than `ground` (by default `1e-10`). Once initialized, the Lorentz transform can be evaluated as `L(y, z)`.
 
 
 ## [Moment expansion](@id momentexpansion-L)
@@ -49,13 +60,13 @@ Dropping the terms that vanish because of the cosine, this can be recast as
 C_{nk}^{(m)}&=(-1)^k\frac{(2m+n-1)!}{(n-2k)!(2k)!!(2m+2k-1)!!}(M\circ f)(n-2k),
 \end{align*}
 ```
-where ``n\doteqdot 2`` means the integer division of ``n`` by ``2``. The structure [`LorentzTransform`](@ref) stores the piecewise function and the expansion coefficients ``C_{nk}^{(m)}``. If ``y-\mathrm{Re}\,z`` is outside the support of the function ``f(x)`` and if the definition of the Lorentz transform yields a result smaller than `ground`, the moment expansion is used.
+where ``n\doteqdot 2`` means the integer division of ``n`` by ``2``. The structure [`LorentzTransform`](@ref) stores the piecewise function and the expansion coefficients ``C_{nk}^{(m)}``. If ``y-\mathrm{Re}\,z`` is outside the [support](@ref) of the function ``f(x)`` and if the definition of the Lorentz transform yields a result smaller than `ground`, the moment expansion is used.
 
 
 
 ## Primitives
 
-Here, we describe the primitives added by [PiecewiseLorentz](@ref) to the [Formulas](@ref) provided by [Piecewise](@ref). In order to handle even and odd piecewise functions, we define the primitive of ``F(x,\mathbf{a})\left[\frac{-\mathrm{Im}\,z/\pi}{(y-\mathrm{Re}\,z-sx)^2+(\mathrm{Im}\,z)^2}\right]^m`` as ``\mathcal{F}_m(s,x,\mathbf{a},y,z)`` with ``s=\pm1``. 
+Here, we describe the primitives added by [PiecewiseLorentz](https://github.com/ChristopheBerthod/Piecewise.jl) to the [Formulas](@ref) provided by [Piecewise](@ref). In order to handle even and odd piecewise functions, we define the primitive of ``F(x,\mathbf{a})\left[\frac{-\mathrm{Im}\,z/\pi}{(y-\mathrm{Re}\,z-sx)^2+(\mathrm{Im}\,z)^2}\right]^m`` as ``\mathcal{F}_m(s,x,\mathbf{a},y,z)`` with ``s=\pm1``. 
 
 [`POLY`](@ref POLY-L) | 
 [`LOG`](@ref LOG-L) | 

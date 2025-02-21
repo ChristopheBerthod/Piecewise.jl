@@ -1,8 +1,8 @@
 module Piecewise
 
-using Printf
 using HypergeometricFunctions: _₂F₁
 using LsqFit: curve_fit
+using Printf
 using Base.Threads: @threads, @spawn, fetch
 
 import Base.show, Base.print, Printf.format

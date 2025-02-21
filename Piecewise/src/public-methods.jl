@@ -122,7 +122,7 @@ end
 """
     domains(f::PiecewiseFunction)
 
-`Vector{Tuple{Real, Real}}` giving the domains of the piecewise function `f`
+Return the domains of the piecewise function `f` as a `Vector{Tuple{Real, Real}}`.
 """
 domains(f::PiecewiseFunction) = [p.domain for p in f.pieces]
 
@@ -130,7 +130,7 @@ domains(f::PiecewiseFunction) = [p.domain for p in f.pieces]
 """
     intervals(f::PiecewiseFunction)
 
-`Vector{String}` representing the domains and boundaries of the piecewise function `f`
+Return a `Vector{String}` representing the domains and boundaries of the piecewise function `f`.
 """
 function intervals(f::PiecewiseFunction)
     i = String[]
@@ -147,7 +147,7 @@ end
 """
     support(f::PiecewiseFunction)
 
-`Tuple{Real, Real}` giving the support of the piecewise function `f`
+Return the support of the piecewise function `f` as a `Tuple{Real, Real}`.
 """
 function support(f::PiecewiseFunction)
     if f.parity in (:even, :odd)
@@ -161,7 +161,7 @@ end
 """
     singularities(f::PiecewiseFunction)
 
-`Vector{Real}` giving the singularities of the piecewise function `f`
+Return the singularities of the piecewise function `f` as a `Vector{Real}`.
 """
 function singularities(f::PiecewiseFunction)
     s = Real[]
@@ -178,7 +178,7 @@ end
 """
     formulas(f::PiecewiseFunction)
 
-`Vector{String}` giving the formula names used in the piecewise function `f`
+Return the formula names used in the piecewise function `f` as a `Vector{String}`. 
 """
 formulas(f::PiecewiseFunction) =
     unique(vcat([[F.name for F in p.rule] for p in f.pieces]...))
@@ -250,27 +250,32 @@ XISRS = Formula("XISRS", 2, XISRS_F, XISRS_F, XISRS_F)
 """
     integraltransform(f::PiecewiseFunction, X::Any)
     
-Integral transform of the piecewise function `f`, defined as
+Return the integral transform of the piecewise function `f`, defined as
 ```math
 (K\\circ f)(\\mathbf{X}) = \\int_{-\\infty}^{\\infty}dx\\,f(x)K(x,\\mathbf{X}).
 ```
-This method assumes that each function `F(::Real, ::Vector{Any})` used in the
-piecewise function `f` has a method `F(::Real, ::Vector{Any}, ::Any)` that
-returns the primitive of ``F(x, \\mathbf{a})`` over the kernel
-``K(x, \\mathbf{X})``, i.e., `d/dx F(x, a, X) = F(x, a) * K(x, X)`. If `f.parity`
-is `:even` or `:odd`, `integraltransform` requires a method `F(::Integer, ::Real,
-::Vector{Any}, ::Any)` such that `d/dx F(1, x, a, X) = F(x, a) * (K(x, X) + 
-K(-x, X))` and `d/dx F(-1, x, a, X) = F(x, a) * (K(x, X) - K(-x, X))`.
+
+This method assumes that each function `F(::Real, ::Vector{Any})` used in the piecewise
+function `f` has a method `F(::Real, ::Vector{Any}, ::Any)` that returns the primitive of
+``F(x, \\mathbf{a})`` multiplied by the kernel ``K(x, \\mathbf{X})``, i.e., `d/dx F(x, a, X)
+= F(x, a) * K(x, X)`. If `f.parity` is `:even` or `:odd`, `integraltransform` requires a
+method `F(::Integer, ::Real, ::Vector{Any}, ::Any)` such that
+`d/dx F(1, x, a, X) = F(x, a) * (K(x, X) + K(-x, X))` and
+`d/dx F(-1, x, a, X) = F(x, a) * (K(x, X) - K(-x, X))`.
 
 ## Example
-This define a `Formula` object `LIN` that can be used to represent any piecewise
-linear function, and such that `integraltransform` provides its Fourier transform:
-```julia-repl
+This define a `Formula` object `LIN` that can be used to represent any piecewise linear
+function, and such that `integraltransform` provides its Fourier transform:
+```jldocs
 julia> F(x, a) = a[1] + a[2] * x;
-       LIN = Formula("LIN", 2, F, (a, s) -> a * s, a -> [a[1], -a[2]]);
-       F(x, a, k) = (a[1] * k + a[2] * (k * x + im)) * exp(im * k * x)/(im * k^2);
-       F(s, x, a, k) = 2 * (s == 1 ? real(F(x, a, k)) : im * imag(F(x, a, k)));
-       f = PiecewiseFunction(:even, [Piece((0, π), LIN, [π, -1])])
+
+julia> LIN = Formula("LIN", 2, F, (a, s) -> a * s, a -> [a[1], -a[2]]);
+
+julia> F(x, a, k) = (a[1] * k + a[2] * (k * x + im)) * exp(im * k * x)/(im * k^2);
+
+julia> F(s, x, a, k) = 2 * (s == 1 ? real(F(x, a, k)) : im * imag(F(x, a, k)));
+
+julia> f = PiecewiseFunction(:even, [Piece((0, π), LIN, [π, -1])])
 < Piecewise even function with 1 piece and support [-3.1416, 3.1416] >
 
 julia> integraltransform(f, 1)
@@ -284,9 +289,9 @@ integraltransform(f::PiecewiseFunction, X::Any) =
 """
     moment(f::PiecewiseFunction, n::Integer)
 
-Moment of order `n` of the piecewise function `f`:
+Return the moment of order `n` of the piecewise function `f`, defined as
 ```math
-(M\\circ f)(n) = \\int_{-\\infty}^{\\infty}dx\\,f(x)x^n
+(M\\circ f)(n) = \\int_{-\\infty}^{\\infty}dx\\,f(x)x^n.
 ```
 """
 function moment(f::PiecewiseFunction, n::Int)
@@ -301,15 +306,14 @@ end
 """
     piecewisefit(f::Function, domain::Tuple{Real, Real}, formulas::Vector{Formula}; kwargs...)
 
-Return a piecewise approximation of the real-valued function `f(::Real)` in the
-domain `domain`, using the formulas given in the array `formulas`
-(see [`Formula`](@ref)).
+Return a piecewise approximation of the real-valued function `f(::Real)` in the domain
+`domain`, using the formulas given in the array `formulas` (see [`Formula`](@ref)).
 
 ## Optional keyword arguments
 * `parity` : Impose a parity (`:even` or `:odd`, default `:none`) to
    the piecewise function
-* `singularities` : Points excluded from the domains (default `[]`)
-* `cuts` : Points forced to be piece boundaries (default `[]`)
+* `singularities` : Points excluded from the domains (default `Real[]`)
+* `cuts` : Points forced to be piece boundaries (default `Real[]`)
 * `grain` : Minimal domain size, default `eps(Float64)`
 * `resolution` : Maximal distance between sampled points, default `Inf`
 * `rtol` : Relative tolerance, default `0.0`
@@ -317,9 +321,9 @@ domain `domain`, using the formulas given in the array `formulas`
 * `loop` : Whether to return `f` in case of failure in a domain, default `false`
 
 ## Example
-Here is a one-piece approximation to the function ``\\sin^{-1}(x)``. The power
-law at ``x=1`` is represented exactly and a polynomial is fit to the rest:
-```julia-repl
+Here is a one-piece approximation to the function ``\\sin^{-1}(x)``. The power law at
+``x=1`` is represented exactly and a polynomial is fit to the rest:
+```jldocs
 julia> f = PiecewiseFunction(:odd, Piece((0, 1), PLS, [1, 1 / 2, -sqrt(2)])) +
            piecewisefit(x -> asin(x) + sqrt(2 - 2 * x), (0, 1), [POLY],
            parity=:odd, atol=1e-5)
@@ -413,9 +417,8 @@ end
 """
     format(f::PiecewiseFunction)
 
-Return a string holding the constructor for the `PiecewiseFunction` object `f`.
-For [`Formula`](@ref) objects than have a name, the name is used instead of the
-constructor of the `Formula` object. Note that `print(f)` is equivalent to
-`print(format(f))`.
+Return a string holding the constructor for the `PiecewiseFunction` object `f`. For
+[`Formula`](@ref) objects than have a name, the name is used instead of the constructor of
+the `Formula` object. Note that `print(f)` is equivalent to `print(format(f))`.
 """
 Printf.format(f::PiecewiseFunction) = _format(f)

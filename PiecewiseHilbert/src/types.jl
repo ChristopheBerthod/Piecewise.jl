@@ -1,12 +1,14 @@
 
 
 """
-    HilbertTransform(f::PiecewiseFunction [, radius::Real])
+    HilbertTransform(f::PiecewiseFunction[, radius::Real])
 
-Constructor of a `HilbertTransform` object for the piecewise function `f`. The
-moment expansion is used beyond |z| = radius in the complex plane. If not
-specified, the radius is set automatically. The field `error` gives an estimate
-of the absolute error at |z| = radius.
+Return a `HilbertTransform` object for the piecewise function `f`.
+
+The `HilbertTransform` object behaves as a function with argument `(z::Complex)`. A moment
+expansion is used beyond ``|z|`` = radius in the complex plane. If not specified, the radius
+is set automatically. The field `error` gives an estimate of the absolute error at ``|z|`` =
+radius.
 
 ## Fields
 
@@ -18,7 +20,7 @@ of the absolute error at |z| = radius.
 ## Example
 
 Hilbert transform of a box:
-```julia-repl
+```jldocs
 julia> H = HilbertTransform(PiecewiseFunction(Piece((-1, 1), POLY, [1])))
 < Hilbert transform of piecewise function with support [-1.0, 1.0] >
 

@@ -1,9 +1,8 @@
 module PiecewiseHilbert
 
-using PolyLog: li2
 using HypergeometricFunctions: _₂F₁
-
 using Piecewise
+using PolyLog: li2
 
 import Base.show, Base.print, Base.broadcastable
 

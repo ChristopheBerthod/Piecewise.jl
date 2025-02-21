@@ -1,6 +1,17 @@
 # Piecewise
 
-A piecewise function of a real variable ``x`` returns a value computed with a formula that depends on the interval in which ``x`` lies. The [Julia](https://julialang.org) module [Piecewise](@ref) represents such a function as a collection of *pieces*. Each piece is an object of type [`Piece`](@ref) that contains an interval and a rule to compute a value, given ``x``. The rule is expressed by *formulas*, that are contained in objects of type [`Formula`](@ref).
+## Installation
+
+The package can be installed with `Pkg.add`.
+```julia
+using Pkg; Pkg.add("Piecewise")
+```
+
+
+
+## Introduction
+
+A piecewise function of a real variable ``x`` returns a value computed with a formula that depends on the interval in which ``x`` lies. The [Julia](https://julialang.org) module [Piecewise](https://github.com/ChristopheBerthod/Piecewise.jl) represents such a function as a collection of *pieces*. Each piece is an object of type [`Piece`](@ref) that contains an interval and a rule to compute a value, given ``x``. The rule is expressed by *formulas*, that are contained in objects of type [`Formula`](@ref).
 
 In mathematical terms, a piecewise function can be written as
 ```math
@@ -25,7 +36,7 @@ where ``\theta(x)`` is the [Heaviside step function](https://en.wikipedia.org/wi
 Consider a function ``f(x)`` that is computationally intensive. If formulas ``F(x, \mathbf{a})`` exist, that can approximate ``f(x)`` in restricted domains to a high accuracy, then ``f(x)`` can be encoded in a fast [`PiecewiseFunction`](@ref) object. This is useful if the function ``f(x)`` is just one part of a bigger calculation that requires computing ``f(x)`` many times. The use of arbitrary functions as formulas allows one to represent behaviors, such as power laws or neighborhood of singularities, that are not well described by polynomial interpolations.
 
 !!! tip
-	The module [Piecewise](@ref) provides the method [`piecewisefit`](@ref piecewisefitsection) for constructing a piecewise approximation of a real-valued function ``f(x)`` to a user-specified accuracy, using user-specified formulas.
+	The module [Piecewise](https://github.com/ChristopheBerthod/Piecewise.jl) provides the method [`piecewisefit`](@ref piecewisefitsection) for constructing a piecewise approximation of a real-valued function ``f(x)`` to a user-specified accuracy, using user-specified formulas.
 
 
 ##### Fast integral transforms
@@ -45,10 +56,10 @@ then the integral transform can be immediately evaluated as
 	\theta\left(x-x_i^{\min}\right)\theta\left(x_i^{\max}-x\right)
 	\sum_j\left[{\mathcal{F}_K}_{ij}(x_i^{\max}, \mathbf{a}_{ij}, \mathbf{X}) - {\mathcal{F}_K}_{ij}(x_i^{\min},  \mathbf{a}_{ij}, \mathbf{X})\right].
 ```
-A simple example of kernel is ``K(x,n)=x^n``, which provides the ``n``-th moment of the function ``f(x)`` defined as ``(M\circ f)(n) = \int_{-\infty}^{\infty}dx\,f(x)x^n``. Other important examples include the Fourier transform with ``K(x, y)=e^{ixy}`` for ``y\in\mathbb{R}``, the Laplace transform with ``K(x, y)=\theta(x)e^{-xy}`` for ``y\in\mathbb{R}``, or the Hilbert transform with kernel ``K(x, y)=1/(y-x)`` for ``y\in\mathbb{C}\setminus\mathbb{R}``, which also yields the [Kramers-Kronig transform](https://en.wikipedia.org/wiki/Kramers–Kronig_relations).
+A simple example of kernel is ``K(x,n)=x^n``, which provides the ``n``-th moment of the function ``f(x)`` defined as ``(M\circ f)(n) = \int_{-\infty}^{\infty}dx\,f(x)x^n``. Other important examples include the Fourier transform with ``K(x, k)=e^{-ikx}`` for ``k\in\mathbb{R}``, the Laplace transform with ``K(x, s)=\theta(x)e^{-sx}`` for ``s\in\mathbb{C}``, or the Hilbert transform with kernel ``K(x, z)=1/(z-x)`` for ``z\in\mathbb{C}\setminus\mathbb{R}``, which also yields the [Kramers-Kronig transform](https://en.wikipedia.org/wiki/Kramers–Kronig_relations).
 
 !!! tip
-	The module [Piecewise](@ref) provides a generic integral transform that can work with user-defined primitives ``\mathcal{F}_K(x, \mathbf{a}, \mathbf{X})``. It also provides several [`Formula`](@ref) objects with primitives for the kernel ``x^n`` (see [Formulas](@ref)). The module [PiecewiseHilbert](@ref) adds to these formulas the primitives needed for the Hilbert transform. The module [PiecewiseLorentz](@ref) adds the primitives needed for what we call the Lorentz transform.
+	The module [Piecewise](https://github.com/ChristopheBerthod/Piecewise.jl) provides a generic integral transform that can work with user-defined primitives ``\mathcal{F}_K(x, \mathbf{a}, \mathbf{X})``. It also provides several [`Formula`](@ref) objects with primitives for the kernel ``x^n`` (see [Formulas](@ref)). The module [PiecewiseHilbert](@ref) adds to these formulas the primitives needed for the Hilbert transform. The module [PiecewiseLorentz](@ref) adds the primitives needed for what we call the Lorentz transform.
 
 
 
@@ -71,13 +82,13 @@ Arithmetic operations with scalars are possible, e.g., `s + f` or `s * f` yield 
 
 A piece is characterized by a domain and a rule to return a value. This rule is an object of type [`Formula`](@ref) or an array of such objects, accompanied by parameters:
 ```
-p = Piece(domain, [included,] rule, parameters)
+p = Piece(domain[, included], rule, parameters)
 ```
 The argument `domain::Tuple{Real, Real}` with `domain[1] <= domain[2]` specifies the domain of the piece. The optional argument `included::Tuple{Bool, Bool}`, by default `(true, true)`,  indicates whether the domain boundaries are included in the domain (see [Domains and boundaries](@ref)). If the argument `rule` is of type [`Formula`](@ref), the argument `parameters` must be of type `Vector{Any}`, while if `rule` is of type `Vector{Formula}`, `parameters` must be of type `Vector{Vector{Any}}`. When several formulas are provided, the rule is the sum of all formulas [^1].
 
 A piece can also be initialized with a single function as
 ```
-p = Piece(domain, [included,] function)
+p = Piece(domain[, included], function)
 ```
 The argument `function` is a function with interface `function(::Real)`. It can also be passed as a string representing an anonymous function. This method of initialization is equivalent to `p = Piece(domain, [included,] Formula(2, (x, a) -> a[2] * function(a[1] * x)), [1.0, 1.0])`. The parameters `a[1]` and `a[2]` are added for the function to behave correctly under the default scaling and mirroring (see [`Formula`](@ref formulasection)).
 
@@ -86,7 +97,7 @@ The argument `function` is a function with interface `function(::Real)`. It can 
 
 An object of type [`Formula`](@ref) is created as
 ```
-F = Formula([name,] params, value [, check] [, scale] [, mirror])
+F = Formula([name,] params, value[, check][, scale][, mirror])
 ```
 The optional argument `name::String` is used for printout purposes. In particular, it allows the method [`format`](@ref) to replace the function by its name. The argument `params::Integer` specifies the number of parameters in the formula. If it is positive, the formula takes exactly `params` parameters; if it is negative, the formula takes at most `-param` parameters. This allows one to define formulas using functions with an unspecified number of parameters, as e.g. polynomials of various orders (see [`POLY`](@ref POLY) and [`piecewisefit`](@ref piecewisefitsection)). The argument `value::Function` is a function with interface `value(x::Real, a::Vector{Any})` that returns a value given `x` and the array of parameters `a`. If `value` is an anonymous function, the code defining that function is not stored in the `Formula` object and thus cannot be printed by the method [`format`](@ref). For that reason, it is also possible to pass `value` as a string representing an anonymous function.
 
@@ -195,7 +206,7 @@ savefig("cantor.svg"); nothing # hide
 
 ## Formulas
 
-The module [Piecewise](@ref) provides several [`Formula`](@ref) objects with appropriate primitives for computing the moments of a piecewise function. In the descriptions below, ``x_{\min}`` and ``x_{\max}`` refer to the boundaries of the domain in which the formula is used and ``{_2F_1}(a,b,c,z)`` refers to the [hypergeometric function](https://en.wikipedia.org/wiki/Hypergeometric_function). This function has a branch cut on the real axis ``z=x\in\mathbb{R}`` for ``x>1``. In all cases considered here, ``{_2F_1}(a,b,c,x)`` refers to the value below the cut, i.e., ``{_2F_1}(a,b,c,x-i0)``.
+The module [Piecewise](https://github.com/ChristopheBerthod/Piecewise.jl) provides several [`Formula`](@ref) objects with appropriate primitives for computing the moments of a piecewise function. In the descriptions below, ``x_{\min}`` and ``x_{\max}`` refer to the boundaries of the domain in which the formula is used and ``{_2F_1}(a,b,c,z)`` refers to the [hypergeometric function](https://en.wikipedia.org/wiki/Hypergeometric_function). This function has a branch cut on the real axis ``z=x\in\mathbb{R}`` for ``x>1``. In all cases considered here, ``{_2F_1}(a,b,c,x)`` refers to the value below the cut, i.e., ``{_2F_1}(a,b,c,x-i0)``.
 
 [`POLY`](@ref POLY) | 
 [`TAIL`](@ref TAIL) | 

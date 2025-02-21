@@ -27,17 +27,19 @@ Base.broadcastable(H::HilbertTransform) = Ref(H)
 
 """
     hilbert_transform(f::PiecewiseFunction, z::Complex)
-    
-Hilbert transform of the piecewise function `f` at the complex number `z`:
+
+Return the Hilbert transform of the piecewise function `f` at the complex number `z`:
 ```math
 (H\\circ f)(z) = \\int_{-\\infty}^{\\infty}dx\\,\\frac{f(x)}{z-x}
 ```
 
 ## Example
-```julia-repl
+```jldocs
 julia> hilbert_transform(PiecewiseFunction([Piece((-1, 1), POLY, [1])]), im)
 0.0 - 1.5707963267948966im
 ```
+
+See also [`HilbertTransform`](@ref).
 """
 function hilbert_transform(f::PiecewiseFunction, z::Complex)
     # Check the formulas used by f

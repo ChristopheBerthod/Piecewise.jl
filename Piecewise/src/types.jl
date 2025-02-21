@@ -2,21 +2,21 @@
 
 """
     Formula([name::String,] params::Integer, value::Function
-        [, check::Function] [, scale::Function] [, mirror::Function])
+        [, check::Function][, scale::Function][, mirror::Function])
 
-Constructor of a `Formula` object with an optional name and a number of
-parameters that is exactly `params` if `params >= 0` and at most `-params` if
-`params < 0`. The value of the formula is set by the function `value(::Real,
-::Vector{Any})`. The optional function `check(a::Vector{Any},
-domain::Tuple{Real, Real}, included::Tuple{Bool, Bool}, danger::Bool,
-fatal::Bool)` must return `true` or `false` depending on whether the function
-`value(x, a)` is valid in the domain specified by `domain` and `included` (see
-[`Piece`](@ref)) with the parameters `a`. Warnings must be issued by `check`
-only if `danger` is `true` and errors must be thrown only if `fatal` is `true`.
-The optional function `scale(a::Vector{Any}, s::Number)` must return the
-parameters after multiplication of the formula by `s`. The optional function
-`mirror(a::Vector{Any})` must return the parameters after even reflection of the
-formula through ``x=0``.
+Return a `Formula` object with an optional name.
+
+The `Formula` takes exactly `params` parameters if `params >= 0` and at most `-params`
+parameters if `params < 0`. The value of the formula is set by the function `value(::Real,
+::Vector{Any})`. The optional function `check(a::Vector{Any}, domain::Tuple{Real, Real},
+included::Tuple{Bool, Bool}, danger::Bool, fatal::Bool)` must return `true` or `false`,
+depending on whether the function `value(x, a)` is valid in the domain specified by `domain`
+and `included` (see [`Piece`](@ref)) with the parameters `a`. Warnings must be issued by
+`check` only if `danger` is `true` and errors must be thrown only if `fatal` is `true`. The
+optional function `scale(a::Vector{Any}, s::Number)` must return the parameters after
+multiplication of the formula by `s`, by default `scale = (a, s) -> [a[1:end-1]..., a[end] *
+s]`. The optional function `mirror(a::Vector{Any})` must return the parameters after even
+reflection of the formula through ``x=0``, by default mirror = `a -> [-a[1], a[2:end]...]`.
 
 ## Fields
 
@@ -30,8 +30,9 @@ formula through ``x=0``.
 ## Example
 
 This creates a square-root singularity:
-```julia-repl
-julia> srs(x, a) = a[2] * sqrt(x - a[1])
+```jldoctest; filter = r"@ Main .*" => s"@ Main"
+julia> srs(x, a) = a[2] * sqrt(x - a[1]);
+
 julia> function srs(a, domain, included, danger, fatal)
            t = domain[1] > a[1] || (domain[1] == a[1] && ! included[1])
            !t && fatal && throw(ArgumentError("Singularity must be at left of domain."))
@@ -39,7 +40,8 @@ julia> function srs(a, domain, included, danger, fatal)
            t = a[2] >= 0
            !t && danger && @warn "Negative singularity in domain \$(domain)."
            return true
-       end
+       end;
+
 julia> F = Formula("SRS", 2, srs, srs)
 Formula("SRS", 2, srs, srs)
 
@@ -204,20 +206,19 @@ end
 
 
 """
-    Piece(domain, [included,] rule, parameters)
+    Piece(domain[, included=(true, true)], rule, parameters)
 
-Constructor of a `Piece` object in the domain defined by the argument
-`domain::Tuple{Real, Real}`. The argument `included::Tuple{Bool, Bool}`, by
-default `(true, true)`, tells whether the domain boundaries belong to the
-domain. The arguments `rule::Vector{Formula}` and
-`parameters::Vector{Vector{Any}}` specify the rule used to evaluate the value of
-the piece (see [`Formula`](@ref)). It is also possible to pass
-`rule::Formula` and `parameters::Vector{Any}` for a single formula.
+Return a `Piece` object in the domain `domain::Tuple{Real, Real}`.
 
-    Piece(domain, [included,] function)
+The argument `included` tells whether the domain boundaries belong to the domain. The
+arguments `rule::Vector{Formula}` and `parameters::Vector{Vector{Any}}` specify the rule
+used to evaluate the value of the piece (see [`Formula`](@ref)). For a single formula, it is
+also possible to pass `rule::Formula` and `parameters::Vector{Any}`.
+
+    Piece(domain[, included=(true, true)], function)
 
 Initialization with a single function. This is equivalent to
-`Piece(domain, [included,] Formula(0, (x, a)->function(x)), Any[])`.
+`Piece(domain[, included], Formula(0, (x, a) -> function(x)), Any[])`.
 
 ## Fields
 
@@ -229,15 +230,15 @@ Initialization with a single function. This is equivalent to
 ## Examples
 
 This represents ``1/x`` for strictly positive numbers:
-```julia-repl
+```jldoctest
 julia> Piece((0, Inf), (false, true), x -> 1 / x)
-< Piece of type unnamed over the domain ]0.0, Inf] >
+< Piece of type unnamed in the domain ]0.0, Inf] >
 
 ```
 This represents ``-\\log|x|`` for ``x\\in ]0, 1]``:
-```julia-repl
+```jldoctest
 julia> Piece((0, 1), (false, true), Formula("LOG", 1, (x, a) -> a[1] * log(abs(x))), [-1])
-< Piece of type LOG over the domain ]0.0, 1.0] >
+< Piece of type LOG in the domain ]0.0, 1.0] >
 
 ```
 """
@@ -314,11 +315,13 @@ end
 
 
 """
-    PiecewiseFunction([parity::Symbol,] pieces::Vector{Piece})
+    PiecewiseFunction([parity=:none,] pieces::Vector{Piece})
 
-Constructor of a `PiecewiseFunction`. The optional argument `parity` is `:none`
-(default), `:even`, or `:odd`. The argument `pieces` contains the various pieces
-(see [`Piece`](@ref)).
+Return a `PiecewiseFunction` object.
+
+The optional argument `parity` can be `:none`, `:even`, or `:odd`. The argument `pieces`
+contains the various pieces (see [`Piece`](@ref)). It is also possible to pass a single
+piece as `pieces::Piece`.
 
 ## Fields
 
@@ -328,7 +331,7 @@ Constructor of a `PiecewiseFunction`. The optional argument `parity` is `:none`
 ## Example
 
 This represents the Cauchy principal value of ``1/x``:
-```julia-repl
+```jldoctest
 julia> f = PiecewiseFunction(:odd, Piece((0, Inf), (false, true), x -> 1 / x))
 < Piecewise odd function with 1 piece and support [-Inf, Inf] >
 

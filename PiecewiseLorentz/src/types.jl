@@ -1,11 +1,14 @@
 
 
 """
-    LorentzTransform(f::PiecewiseFunction, m::Integer [, ground::Real=1e-10])
+    LorentzTransform(f::PiecewiseFunction, m::Integer[, ground::Real=1e-10])
 
-Constructor of a `LorentzTransform` object for the piecewise function `f`.
-`m` is the order of the transform. The moment expansion is used if the result
-of the transform is smaller than `ground`.
+Return a `LorentzTransform` object for the piecewise function `f`.
+
+`m` is the order of the transform. The `LorentzTransform` object behaves as a function with
+arguments `(y::Real, z::Complex)`. A moment expansion is used if ``y-\\mathrm{Re}\\,z`` is
+outside the [support](@ref) of the piecewise function and if the result of the transform is
+smaller than `ground`.
 
 ## Fields
 
@@ -17,7 +20,7 @@ of the transform is smaller than `ground`.
 ## Example
 
 ``L^2`` transform of a box:
-```julia-repl
+```jldocs
 julia> L = LorentzTransform(PiecewiseFunction(Piece((-1, 1), POLY, [1])), 2)
 < L^2 transform of piecewise function with support [-1.0, 1.0] >
 

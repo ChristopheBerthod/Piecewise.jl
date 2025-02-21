@@ -28,17 +28,19 @@ Base.broadcastable(L::LorentzTransform) = Ref(L)
 """
     lorentz_transform(f::PiecewiseFunction, m::Integer, y::Real, z::Complex)
     
-``Lorentz transform of the piecewise function `f`:
+Return the Lorentz transform of the piecewise function `f`:
 ```math
 (L^m\\circ f)(y, z) = \\int_{-\\infty}^{\\infty}dx\\,f(x)\\left[\\frac{\\mathrm{Im}
-\\,z/\\pi}{(y-\\mathrm{Re}\\,z-x)^2+(\\mathrm{Im}\\,z)^2}\\right]^m
+\\,z/\\pi}{(y-\\mathrm{Re}\\,z-x)^2+(\\mathrm{Im}\\,z)^2}\\right]^m.
 ```
 
 ## Example
-```julia-repl
+```jldocs
 julia> lorentz_transform(PiecewiseFunction([Piece((-1, 1), POLY, [1])]), 2, 0, -im)
 0.13023806336711655
 ```
+
+See also [`LorentzTransform`](@ref).
 """
 function lorentz_transform(f::PiecewiseFunction, m::Int, y::Real, z::Complex)
     # Check the formulas used by f

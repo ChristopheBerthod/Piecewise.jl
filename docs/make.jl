@@ -1,6 +1,10 @@
 using Documenter
 using Piecewise, PiecewiseHilbert, PiecewiseLorentz
 
+DocMeta.setdocmeta!(Piecewise, :DocTestSetup, :(
+    using Piecewise; using PiecewiseHilbert; using PiecewiseLorentz
+    ); recursive=true)
+
 makedocs(
     repo = Documenter.Remotes.GitHub("ChristopheBerthod", "Piecewise.jl"),
     sitename = "Piecewise",
