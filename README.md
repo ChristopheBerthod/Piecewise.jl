@@ -22,3 +22,14 @@ This repository contains three modules written in [Julia](https://julialang.org/
 using Pkg; Pkg.add.(["Piecewise", "PiecewiseHilbert", "PiecewiseLorentz"]);
 ```
 
+### Examples
+
+- [Tutorial 1](https://github.com/ChristopheBerthod/Piecewise.jl/notebooks/Tutorial-1.ipynb): Constructing approximations with [`Piecewise.piecewisefit`](https://christopheberthod.github.io/Piecewise.jl/dev/index.html#Piecewise.piecewisefit)
+- [Tutorial 2](https://github.com/ChristopheBerthod/Piecewise.jl/notebooks/Tutorial-2.ipynb): Solving an implicit equation using [`PiecewiseHilbert`](https://christopheberthod.github.io/Piecewise.jl/dev/hilbert.html)
+- Use case: [MagnetoTransport.jl](https://christopheberthod.github.io/MagnetoTransport.jl/dev/index.html#MagnetoTransport.jl)
+
+### Contributing
+
+Contributions and suggestions are welcome. An expert advice on the following would be especially valuable:
+- The evaluation of `PiecewiseFunction` objects seems slow and may benefit from optimizations.
+- The parallelism of `piecewisefit` needs improvement.
