@@ -40,7 +40,7 @@ The module `Piecewise` provides such an environment based on three structures. A
 
 2. For a complete use case, see [`MagnetoTransport.jl`](https://github.com/ChristopheBerthod/MagnetoTransport.jl).
 
-3. For an example of nonlinear integral equation solved using `Piecewise`, see [@vanderMarel-2024].
+3. For an example of nonlinear integral equation solved using `Piecewise`, see @vanderMarel-2024.
 
 4. A simple demonstration is provided below.
 
