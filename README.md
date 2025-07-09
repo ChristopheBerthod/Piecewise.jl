@@ -26,7 +26,7 @@ using Pkg; Pkg.add.(["Piecewise", "PiecewiseHilbert", "PiecewiseLorentz"]);
 
 - [Tutorial 1](https://github.com/ChristopheBerthod/Piecewise.jl/blob/main/notebooks/Tutorial-1.ipynb): Constructing approximations with [`Piecewise.piecewisefit`](https://christopheberthod.github.io/Piecewise.jl/dev/index.html#Piecewise.piecewisefit)
 - [Tutorial 2](https://github.com/ChristopheBerthod/Piecewise.jl/blob/main/notebooks/Tutorial-2.ipynb): Solving an implicit equation using [`PiecewiseHilbert`](https://christopheberthod.github.io/Piecewise.jl/dev/hilbert.html)
-- Use case: [MagnetoTransport.jl](https://christopheberthod.github.io/MagnetoTransport.jl/dev/index.html#MagnetoTransport.jl)
+- Use case: [MagnetoTransport.jl](https://github.com/ChristopheBerthod/MagnetoTransport.jl)
 
 ### Contributing
 
