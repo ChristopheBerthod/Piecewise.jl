@@ -157,6 +157,8 @@ The argument `formulas` can hold several [`Formula`](@ref) objects with fixed nu
 
 If the function ``g(x)`` is noiseless, the algorithm should converge with relatively large sub-domains. If ``g(x)`` has numerical noise, the algorithm will likely be trapped trying to piecewise-fit that noise. To avoid this, a minimal sub-domain size may be specified with the optional argument `grain`. If `grain > eps(Float64)`, the algorithm returns the best possible fit in sub-domains of typical size `grain`. If no fit is successful, or if `grain = eps(Float64)`, the algorithm returns a [`Piece`](@ref) object that uses either the function ``g(x)`` if the optional argument `loop` is `true`, or a linear interpolation of ``g(x)`` across the domain if it is `false` (default). On the other hand, relevant rapid variations of ``g(x)`` may be missed by the algorithm, because it tries to minimize the number of calls to `g(x)`. The optional argument `resolution` allows one to control how finely the function ``g(x)`` is sampled.
 
+Because [`piecewisefit`](@ref) operates independently in each piece, the fitted function ``f(x)`` may display small discontinuities at the boundaries of the domains, despite ``g(x)`` being continuous there. To try and enforce approximate continuity, sampling points are introduced at the boundaries to better constrain the fitting.
+
 The optional keyword arguments are:
 
 *  `parity::Symbol`: imposes a given parity (`:even` or `:odd`) to the [`PiecewiseFunction`](@ref) object (by default `parity = :none`)

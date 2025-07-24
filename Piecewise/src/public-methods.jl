@@ -185,7 +185,7 @@ formulas(f::PiecewiseFunction) =
 
 
 """
-Polynomial of varying order (0 to 13 parameters)
+Polynomial of varying order (1 to 13 parameters)
 ```math
 F(x,\\mathbf{a}) = \\sum_{i=1}^n a_i x^{i-1}
 ```

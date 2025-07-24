@@ -31,6 +31,12 @@ using Pkg; Pkg.add.(["Piecewise", "PiecewiseHilbert", "PiecewiseLorentz"]);
 
 ### Contributing
 
-Contributions and suggestions are welcome. An expert advice on the following would be especially valuable:
-- The evaluation of `PiecewiseFunction` objects seems slow and may benefit from optimizations.
-- The parallelism of `piecewisefit` needs improvement.
+Contributions and suggestions are welcome. If you're interested in contributing, please feel free to reach out via [email](mailto:christophe.berthod@unige.ch). Bug reports can be submitted through the [issue tracker](https://github.com/ChristopheBerthod/Piecewise.jl/issues), but email is preferred for quicker responses.
+
+This policy may evolve if additional contributors become actively involved.
+
+Expert input would be especially valuable in the following areas:
+
+* **Evaluation performance**: The evaluation of `PiecewiseFunction` objects appears to be slower than desirable. More efficient strategies to identify the relevant domain could yield significant improvements.
+
+* **Parallel execution**: The parallelism in `piecewisefit` could benefit from the scrutiny of those with a deeper understanding of Julia's parallel execution.
