@@ -1,7 +1,7 @@
 name = "PiecewiseHilbert"
 uuid = "fb75a84c-a7ae-4011-94d8-abc4bb6dbff9"
 authors = ["Christophe Berthod <christophe.berthod@unige.ch>"]
-version = "0.1.1"
+version = "0.1.2"
 
 [deps]
 HypergeometricFunctions = "34004b35-14d8-5ef3-9330-4cdb6864b03a"
