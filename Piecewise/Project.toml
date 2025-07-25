@@ -1,7 +1,7 @@
 name = "Piecewise"
 uuid = "f03ddd90-437e-4cf2-8f6c-e62f92609b90"
 authors = ["Christophe Berthod <christophe.berthod@unige.ch>"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 HypergeometricFunctions = "34004b35-14d8-5ef3-9330-4cdb6864b03a"
@@ -11,8 +11,8 @@ Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 [compat]
 HypergeometricFunctions = "0.3.27"
 LsqFit = "0.15.0"
-Printf = "1.11.0"
-Test = "1.11.0"
+Printf = "1.8"
+Test = "1.10"
 julia = "1.10"
 
 [extras]
