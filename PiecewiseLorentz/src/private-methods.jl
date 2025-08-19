@@ -195,7 +195,7 @@ end
 
 #function _f05(s::Int, x::Real, a::Vector{T} where T<:Any,
 #    X::Tuple{Int, Real, Complex})
-# reguires the AppellF1 function
+# requires the AppellF1 function
 # sympy.functions.special.hyper.appellf1
 #end
 

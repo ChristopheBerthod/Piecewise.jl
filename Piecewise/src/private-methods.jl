@@ -461,7 +461,7 @@ function _format(p::Piece; indent::Int=0)
         s *= (F.name == "" ? F.constructor : F.name)
     end
     s *= "],\n"
-    # Generate a string with all formated parameters (indented)
+    # Generate a string with all formatted parameters (indented)
     params = " "^(indent + 4) * "["
     for (j, a) in enumerate(p.parameters)
         j > 1 && (params *= ", ")
