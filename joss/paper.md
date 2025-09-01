@@ -9,7 +9,7 @@ authors:
     orcid: 0000-0002-0787-008X
     affiliation: 1
 affiliations:
- - name: Department of Quantum Matter Physics, University of Geneva, 1205 Geneva, Switzerland
+ - name: Department of Quantum Matter Physics, University of Geneva, 1211 Geneva, Switzerland
    index: 1    
 date: 18 February 2025
 bibliography: paper.bib
