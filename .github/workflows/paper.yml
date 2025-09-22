@@ -14,7 +14,7 @@ jobs:
       - name: TeX and PDF
         uses: docker://openjournals/paperdraft:latest
         with:
-          args: '-k paper.md'
+          args: '-k joss/paper.md'
         env:
           GIT_SHA: $GITHUB_SHA
           JOURNAL: joss
