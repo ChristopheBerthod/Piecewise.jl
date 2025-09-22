@@ -14,7 +14,7 @@ jobs:
       - name: TeX and PDF
         uses: docker://openjournals/paperdraft:latest
         with:
-          args: '-k joss/paper.md'
+          args: '-k paper/paper.md'
         env:
           GIT_SHA: $GITHUB_SHA
           JOURNAL: joss
@@ -25,4 +25,4 @@ jobs:
           # This is the output path where Pandoc will write the compiled
           # PDF. Note, this should be the same directory as the input
           # paper.md
-          path: joss/
+          path: paper/
