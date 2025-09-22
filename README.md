@@ -3,7 +3,7 @@
 [![CI](https://github.com/ChristopheBerthod/Piecewise.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/ChristopheBerthod/Piecewise.jl/actions/workflows/CI.yml)
 [![codecov](https://codecov.io/gh/ChristopheBerthod/Piecewise.jl/graph/badge.svg?token=cXaZZi9hdM)](https://codecov.io/gh/ChristopheBerthod/Piecewise.jl)
 [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://ChristopheBerthod.github.io/Piecewise.jl/dev)
-[![status](https://joss.theoj.org/papers/c54fbe7bd14b9ef757580b362235db46/status.svg)](https://joss.theoj.org/papers/c54fbe7bd14b9ef757580b362235db46)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.08329/status.svg)](https://doi.org/10.21105/joss.08329)
 
 This repository contains three modules written in [Julia](https://julialang.org/):
 

@@ -1,0 +1,28 @@
+cff-version: "1.2.0"
+authors:
+- family-names: Berthod
+  given-names: Christophe
+  orcid: "https://orcid.org/0000-0002-0787-008X"
+doi: 10.5281/zenodo.17016438
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+  - family-names: Berthod
+    given-names: Christophe
+    orcid: "https://orcid.org/0000-0002-0787-008X"
+  date-published: 2025-09-22
+  doi: 10.21105/joss.08329
+  issn: 2475-9066
+  issue: 113
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 8329
+  title: "Piecewise: Flexible piecewise functions for fast integral
+    transforms in Julia"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.08329"
+  volume: 10
+title: "Piecewise: Flexible piecewise functions for fast integral
+  transforms in Julia"
