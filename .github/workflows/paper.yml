@@ -18,7 +18,7 @@ jobs:
         with:
           journal: joss
           # This should be the path to the paper within your repo.
-          paper-path: joss/paper.md
+          paper-path: joss/
           args: '-k joss/paper.md'
         env:
           GIT_SHA: $GITHUB_SHA
